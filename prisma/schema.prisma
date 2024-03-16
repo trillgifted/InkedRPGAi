@@ -1,0 +1,34 @@
+datasource db {
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearch", "fullTextIndex"]
+}
+
+model Category {
+  id       String     @id @default(uuid())
+  name     String
+  scenario Scenario[]
+}
+
+model Scenario {
+  id           String @id @default(uuid())
+  userId       String
+  userName     String
+  src          String
+  name         String @db.Text
+  description  String
+  instructions String @db.Text
+
+  createdAt  DateTime @default(now())
+  lastPlayed DateTime @updatedAt
+  category   Category @relation(fields: [categoryId], references: [id])
+  categoryId String
+
+  @@index([categoryId])
+  @@fulltext([name])
+}
