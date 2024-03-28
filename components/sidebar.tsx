@@ -1,11 +1,13 @@
 "use client";
-import { Home, Plus, Settings } from "lucide-react";
+import { Home, Plus, Settings, Bookmark } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { usePathname, useRouter } from "next/navigation";
+import { useUser } from "@clerk/clerk-react";
 
 export const Sidebar = () => {
   const pathname = usePathname();
   const router = useRouter();
+  const { user } = useUser();
 
   const routes = [
     {
@@ -26,10 +28,17 @@ export const Sidebar = () => {
       label: "Settings",
       pro: false,
     },
+    {
+      icon: Bookmark,
+      href: user ? `/profile/${user.id}` : "/",
+      label: "Saved",
+      pro: false,
+    },
   ];
+
   const onNavigate = (url: string, pro: boolean) => {
     //TODO: check if PRO
-    return router.push(url);
+    router.push(url);
   };
 
   return (

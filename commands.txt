@@ -1,2 +1,6 @@
 npm run dev
 npx next dev
+
+//primsa database
+npx prisma generate
+npx prisma db push

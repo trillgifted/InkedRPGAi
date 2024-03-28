@@ -85,7 +85,10 @@ body,
     @apply border-border;
     @apply text-white;
     @apply bg-background;
+    
   }
+
+  
     
 }
 

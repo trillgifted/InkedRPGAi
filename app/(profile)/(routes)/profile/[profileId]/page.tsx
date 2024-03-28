@@ -1,16 +1,17 @@
-import prismadb from "@/lib/prismadb";
-import { Categories } from "@/components/categories";
+import { SearchInput } from "@/components/search-input";
+import React from "react";
 import { RenderSearchBox } from "@/components/ui/renderSearchBox";
+import { Categories } from "@/components/categories";
+import prismadb from "@/lib/prismadb";
 import { Scenarios } from "@/components/scenarios/scenarios";
-
-interface RootPageProps {
+interface ProfilePageProps {
   searchParams: {
     categoryId: string;
     name: string;
   };
 }
 
-const RootPage = async ({ searchParams }: RootPageProps) => {
+const ProfilePage = async ({ searchParams }: ProfilePageProps) => {
   const data = await prismadb.scenario.findMany({
     where: {
       categoryId: searchParams.categoryId,
@@ -21,6 +22,7 @@ const RootPage = async ({ searchParams }: RootPageProps) => {
     orderBy: {
       createdAt: "desc",
     },
+
     include: {
       _count: {
         select: {
@@ -29,16 +31,12 @@ const RootPage = async ({ searchParams }: RootPageProps) => {
       },
     },
   });
-  console.log(searchParams.name);
   const categories = await prismadb.category.findMany();
-
   return (
     <div className="h-full p-4 space-y-2">
       <RenderSearchBox />
-      <Categories data={categories} />
-      <Scenarios data={data} />
     </div>
   );
 };
 
-export default RootPage;
+export default ProfilePage;
