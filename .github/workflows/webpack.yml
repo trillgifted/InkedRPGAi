@@ -9,6 +9,10 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    container:
+      image: my-docker-image:latest
+      ports:
+        - 8080:8080
 
     strategy:
       matrix:
